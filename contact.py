@@ -62,43 +62,45 @@ def main(samplesize_ = samplesize, selected_objects_ = selected_objects):
         large_v, small_v = small_v, large_v
 
     # converting coordinates to numpy array
-    small = np.array(small_co)
-    large = np.array(large_co)
+    small_co = np.array(small_co)
+    large_co = np.array(large_co)
 
     # no of iterations required to calculate distance between all points in small and large coordinates array
     absdiff = abs(diff)
-    iterations = len(small) + absdiff - 1
+    iterations = len(small_co) + absdiff - 1
 
-    # limit for large coordinates array for vectorized operations
-    limit = len(large) - absdiff
+    # rolling pointer for circular convolution. it will roll large objects coordinates array at each iteration. 
+    # all items will be pushed to the next index and the last item will be pushed to first
+    rolling_pointer = np.arange(len(large_co))
+    # dynamic pointer for sorting by small object's coordinates array such that coordinates at the same index are the closest
+    # pair nodes
+    dynamic_pointer = np.copy(rolling_pointer)
 
-    # creating large coordinates array's index pointer
-    largeidx = np.arange(len(large))
-    # creating placeholder for large coordinates array's minimum distance index pointer
-    largeidxmins = np.array(largeidx)
+    # limit for resizing large coordinates array equal to small coordinates array
+    limit = len(large_co) - absdiff
 
     # initial iteration
-    largeidxlimit = largeidx[:limit]
-    largelimited = large[largeidxlimit]
+    rolling_pointer_resized = rolling_pointer[:limit]
+    large_co_resized = large_co[rolling_pointer_resized]
 
     # np.linalg.norm - applying distance formula
-    leastdists = np.linalg.norm(small - largelimited, axis=1)
+    leastdists = np.linalg.norm(small_co - large_co_resized, axis=1)
 
     for i in range(iterations):
         # rolling indexes for circular convolution
-        largeidx = np.roll(largeidx, -1)
+        rolling_pointer = np.roll(rolling_pointer, -1)
 
         # next iteration
-        largeidxlimit = largeidx[:limit]
-        largelimited = large[largeidxlimit]
-        new = np.linalg.norm(small - largelimited, axis=1)
+        rolling_pointer_resized = rolling_pointer[:limit]
+        large_co_resized = large_co[rolling_pointer_resized]
+        new = np.linalg.norm(small_co - large_co_resized, axis=1)
 
         # perpare mask where new least distances are found
         mask = new < leastdists
         # check if new distances are found
         if np.any(mask):
-            # update minimum distance index pointer where new least found
-            largeidxmins[:limit][mask] = largeidxlimit[mask]
+            # update dynamic pointer where new least distances are found
+            dynamic_pointer[:limit][mask] = rolling_pointer_resized[mask]
             # update distance with new least distances
             leastdists[mask] = new[mask]    
 
@@ -116,19 +118,15 @@ def main(samplesize_ = samplesize, selected_objects_ = selected_objects):
     small_v_np = np.array(small_v)
 
     # updating large index pointer to contact qualified indexes
-    largeidxcontact = largeidxmins[:limit][mask]
-    
+    dynamic_pointer_sorted = dynamic_pointer[:limit][mask]
     
     # slicing into vertices pairs
-    large_v_np = large_v_np[largeidxcontact]
+    large_v_np = large_v_np[dynamic_pointer_sorted]
     small_v_np = small_v_np[mask]
 
     # converting to list
     large_v_list = large_v_np.tolist()
     small_v_list = small_v_np.tolist()
-    
-    print(large_v_list) 
-    print(small_v_list)
     
     if(not len(large_v_list) == len(small_v_list)):
         raise Exception('Equal number of nodes not found contact developer')
@@ -139,9 +137,9 @@ def main(samplesize_ = samplesize, selected_objects_ = selected_objects):
 
     if(TESTING):
         # slicing into coordinates pairs
-        small = small[mask]
-        large = large[largeidxcontact]
-        dists = np.linalg.norm(small - large, axis=1)
+        small_co = small_co[mask]
+        large_co = large_co[dynamic_pointer_sorted]
+        dists = np.linalg.norm(small_co - large_co, axis=1)
         return {
             "length" : len(large_v_list),
             "threshold" : threshold,
