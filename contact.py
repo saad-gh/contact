@@ -1,4 +1,6 @@
 '''Circular convolution algorithm to get contact between two surfaces
+Author: Saad Ahmed Khan
+Email: s.aad@live.com
 
 Constraints: 
 1. Within the threshold range each node on one surface has only one closest node on the other surface.
@@ -117,7 +119,8 @@ def main(samplesize_ = samplesize, selected_objects_ = selected_objects):
     large_v_np = np.array(large_v)
     small_v_np = np.array(small_v)
 
-    # updating large index pointer to contact qualified indexes
+    # dynamic pointer sorted by small object's coordinates array such that coordinates at the same index are the closest
+    # pair nodes
     dynamic_pointer_sorted = dynamic_pointer[:limit][mask]
     
     # slicing into vertices pairs
