@@ -1,14 +1,13 @@
 '''Circular convolution algorithm to get contact between two surfaces
-Author: Saad Ahmed Khan
-Email: s.aad@live.com
 
 Constraints: 
-1. Within the threshold range each node on one surface has only one closest node on the other surface.
-See tests below, case 3 voilates this assumption. This can cause error in result if the threshold is around the edges
-where the two contacting surfaces are moving away from each other but the sample size can be used to control this error
-by not selecting a very large number such that edge node are included while calculating the threshold
+1. If a node on one surface has more then one closest node on the other surface then it will form the pair with 
+the least distant node others will be ignored see test case 3
 2. Rounding off threshold and least distance values to 5 decimal places to avoid computational precision
 error
+
+Author: Saad Ahmed Khan
+Email: s.aad@live.com
 '''
 
 # numerical python library comes with blender
@@ -135,7 +134,9 @@ def main(samplesize_ = samplesize, selected_objects_ = selected_objects):
         "large_v_np" : large_v_np,
         "leastdists" : leastdists[mask]
     }
-    df = pd.DataFrame(data).sort_values(["large_v_np","leastdists"]).groupby(["large_v_np"]).first().reset_index()
+    sorted = pd.DataFrame(data).sort_values(["large_v_np","leastdists"])
+    grouped = sorted.groupby(["large_v_np"])
+    df = grouped.first().reset_index()
 
     # converting to list
     large_v_list = df["large_v_np"].tolist()
@@ -213,7 +214,22 @@ elif TESTING:
     computed = main(samplesize, [cube1, cube2])
     evaluate(computed, expected)
 
-    # case 3 - this will fail because it voilates the assumption mentioned at the begining of this file
+    # case 3 - when sample size 3 is selected threshold calculation will include three smallest distance between nodes of two
+    # cubes, this will make a couple of nodes on one cube closest to three nodes on the other cube. 
+    # One of them is shown below. The closest ones will pair up others as highlighted by 'x' will be ignored 
+    '''
+                    x                   
+                    . _____ 
+                    |       |
+                    |       |
+                    . _____ . x
+                    
+      _____ . 
+    |       |
+    |       |
+      _____
+
+    '''
     samplesize = 3
     # expected_threshold - in case code was developed to cater for the assumption
     expected_threshold = round((3**2 + 3**2)**(1/2), 5)
