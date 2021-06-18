@@ -13,6 +13,7 @@ error
 
 # numerical python library comes with blender
 import numpy as np
+import pandas as pd
 # blender python API
 import bpy
 C = bpy.context
@@ -110,7 +111,7 @@ def main(samplesize_ = samplesize, selected_objects_ = selected_objects):
     
     # rounding to avoid precision error
     threshold = round(threshold, 5)
-    leastdists = [round(dist, 5) for dist in leastdists]
+    leastdists = np.array([round(dist, 5) for dist in leastdists])
     
     # prepare mask for least distances which qualify as contancting nodes
     mask = leastdists <= threshold
@@ -127,9 +128,19 @@ def main(samplesize_ = samplesize, selected_objects_ = selected_objects):
     large_v_np = large_v_np[dynamic_pointer_sorted]
     small_v_np = small_v_np[mask]
 
+    # ignore non one to many relations
+    # https://stackoverflow.com/questions/30003068/how-to-get-a-list-of-all-indices-of-repeated-elements-in-a-numpy-array
+    data = {
+        "small_v_np" : small_v_np,
+        "large_v_np" : large_v_np,
+        "leastdists" : leastdists[mask]
+    }
+    df = pd.DataFrame(data).sort_values(["large_v_np","leastdists"]).groupby(["large_v_np"]).first().reset_index()
+
     # converting to list
-    large_v_list = large_v_np.tolist()
-    small_v_list = small_v_np.tolist()
+    large_v_list = df["large_v_np"].tolist()
+    small_v_list = df["small_v_np"].tolist()
+
     
     if(not len(large_v_list) == len(small_v_list)):
         raise Exception('Equal number of nodes not found contact developer')
