@@ -128,7 +128,7 @@ def main(samplesize_ = samplesize, selected_objects_ = selected_objects):
     large_v_np = large_v_np[dynamic_pointer_sorted]
     small_v_np = small_v_np[mask]
 
-    # ignore non one to many relations
+    # ignore one to many relations
     # https://stackoverflow.com/questions/30003068/how-to-get-a-list-of-all-indices-of-repeated-elements-in-a-numpy-array
     data = {
         "small_v_np" : small_v_np,
