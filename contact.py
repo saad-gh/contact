@@ -242,6 +242,3 @@ elif TESTING:
     evaluate(computed, expected)
     
     C.area.type = 'TEXT_EDITOR'
-
-def adjust_precision(v):
-    pass
