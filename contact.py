@@ -23,7 +23,7 @@ objects
 @param selected_objects - two objects selected by the user where there needs to be 
 a contact
 '''
-samplesize = 3
+samplesize = 7000
 selected_objects = C.selected_objects
 
 def separateCoordinates(obj):
