@@ -45,7 +45,8 @@ This parameter in the only directive set by the user which the script needs to i
 - All nodes with distances less than threshold are qualified as contact nodes
 
 # Next Step
-- Utilize Gmsh API to mesh the objects while preserving vertex groups
+- Optimize algorithm.
+- Transform Blender's 3D objects and their respective contact groups into mesh format while preserving the groups. Presently with Salome Meca 3D objects and their contact groups are imported as separate geometries then remerged so that groups are preserved. This is time consuming and error prone. One possibility maybe to use [Gmsh][3] API which produces Code Aster compatible meshes.
 
 # Reference 
 
@@ -58,3 +59,5 @@ This parameter in the only directive set by the user which the script needs to i
 [1]: https://www.code-aster.org/spip.php?article303
 
 [2]: https://www.code-aster.org/spip.php?rubrique2
+
+[3]: https://gmsh.info/
