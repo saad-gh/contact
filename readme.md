@@ -31,7 +31,7 @@ cd /path/to/blender/python/bin
 - Select both imported objects from the 'Outliner' in the 'Editor Type' menu
 - Open 'Text Editor' in the 'Editor Type' menu
 - From the 'Text Editor' menu click 'Text > Create Text Block'
-- Copy paste the code from 'contact.py'
+- Copy paste the code from 'appendixA2.py'
 - While keeping the mouse pointer inside 'Text Editor' press 'Ctrl + p'
 
 Contact vertex groups will be generated. Vertex groups can be viewed in 'Data' type property of 'Properties' type editor in 'Editor Type' menu
