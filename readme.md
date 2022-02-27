@@ -44,10 +44,6 @@ This parameter in the only directive set by the user which the script needs to i
 - The distance of the most distant node among these nodes is the threshold 
 - All nodes with distances less than threshold are qualified as contact nodes
 
-# Next Steps
-- Explore further optimization of algorithm.
-- Transform Blender's 3D objects and their respective contact groups into mesh format while preserving the groups. Presently with Salome Meca 3D objects and their contact groups are imported as separate geometries then remerged so that groups are preserved. This is time consuming and error prone. One possibility maybe to use [Gmsh][3] API which produces Code Aster compatible meshes.
-
 # Reference 
 
 [Blender: Using 3rd party Python modules](https://blender.stackexchange.com/a/122337)
