@@ -12,6 +12,7 @@ Email: s.aad@live.com
 
 # numerical python library comes with blender
 import numpy as np
+# needs to be install separately. https://blender.stackexchange.com/a/122337/83435
 import pandas as pd
 # blender python API
 import bpy
@@ -42,7 +43,7 @@ def main(samplesize_ = samplesize, selected_objects_ = selected_objects):
     ''' main driver function for generating contact
     References 
     Euclidean Distance - https://stackoverflow.com/questions/1401712/how-can-the-euclidean-distance-be-calculated-with-numpy
-    Third Party Modules - https://blender.stackexchange.com/questions/5287/using-3rd-party-python-modules
+    Third Party Modules - https://blender.stackexchange.com/a/122337/83435
     Minimum Euclidean Distance - https://stackoverflow.com/questions/1871536/minimum-euclidean-distance-between-points-in-two-different-numpy-arrays-not-wit
     '''
 

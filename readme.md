@@ -46,7 +46,7 @@ This parameter in the only directive set by the user which the script needs to i
 
 # Reference 
 
-[Blender: Using 3rd party Python modules](https://blender.stackexchange.com/a/122337)
+[Blender: Using 3rd party Python modules](https://blender.stackexchange.com/a/122337/83435)
 
 [Euclidean distance](https://stackoverflow.com/questions/1401712/how-can-the-euclidean-distance-be-calculated-with-numpy)
 
@@ -55,5 +55,3 @@ This parameter in the only directive set by the user which the script needs to i
 [1]: https://www.code-aster.org/spip.php?article303
 
 [2]: https://www.code-aster.org/spip.php?rubrique2
-
-[3]: https://gmsh.info/
